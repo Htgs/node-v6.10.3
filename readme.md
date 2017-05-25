@@ -3,13 +3,16 @@
 ##global
 
 1.global是node中的全局变量
+
 2.包含__dirname、__filename、process、require、module等属性和对象
 
 
 ##module
 
 1.module是node的模块加载系统
+
 2.优先加载核心模块
+
 3.简单实用方式
 
 ```
@@ -45,7 +48,9 @@
 ##timer
 
 1.定时器主要用setTimeout、setInterval、setImmediate
+
 2.setTimeout、setInterval用法与javascript一样
+
 3.setImmediate无需延迟毫秒,执行顺序优先于setTimeout、setInterval
 
 ```
@@ -71,6 +76,7 @@
 ##path
 
 1.需要引入核心模块 require('path')
+
 2.注意操作系统的分隔符 path.sep
 
 ```
@@ -105,7 +111,9 @@
 ##querystring
 
 1.需要引入核心模块 require('querystring')
+
 2.编码和解码escape、unescape
+
 3.对象化和字符串化parse、stringify
 
 ```
@@ -136,7 +144,9 @@
 ##Buffer
 
 1.由于是node6+，使用的是Buffer类来生成buffer，node6之前的版本使用new Buffer已经废弃
+
 2.不需要引入核心模块
+
 3.注意使用字符编码
 
 ```
@@ -181,6 +191,7 @@
 ##stringdecoder
 
 1.需要引入核心模块 require('string_decoder')
+
 2.主要用于对buffer实例与字符之间进行转换
 
 ```
@@ -202,6 +213,7 @@
 ##event
 
 1.单独使用时需要引入核心模块 require('events') 并把创建一个构造函数，使用时需要进行实例化
+
 2.在node大部分api中都会存在异步事件驱动，在使用这些api时无需引入events模块
 
 ```
@@ -233,11 +245,14 @@
 ##error
 
 1.node有四种错误分类:
-	标准的 JavaScript 错误
-	由底层操作系的触发的系统错误，例如试图打开一个不存在的文件、试图向一个已关闭的 socket 发送数据等。
-	由应用程序代码触发的用户自定义的错误。
-	断言错误是错误的一个特殊的类，每当 Node.js 检测到一个不应该发生的异常逻辑时会触发。 这类错误通常由 assert 模块触发。
+
+ 标准的 JavaScript 错误
+ 由底层操作系的触发的系统错误，例如试图打开一个不存在的文件、试图向一个已关闭的 socket 发送数据等。
+ 由应用程序代码触发的用户自定义的错误。
+ 断言错误是错误的一个特殊的类，每当 Node.js 检测到一个不应该发生的异常逻辑时会触发。 这类错误通常由 assert 模块触发。
+
 2.由于node使用的api大部分都是异步事件驱动，所以在回调函数中通常第一个参数是错误参数
+
 3.node比较少try catch捕获错误
 
 ```
@@ -250,5 +265,7 @@
 #TODO
 
 1. process
+
 2.steam
+
 3.file
