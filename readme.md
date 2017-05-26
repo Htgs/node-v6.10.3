@@ -246,10 +246,13 @@
 
 1.node有四种错误分类:
 
- 标准的 JavaScript 错误
- 由底层操作系的触发的系统错误，例如试图打开一个不存在的文件、试图向一个已关闭的 socket 发送数据等。
- 由应用程序代码触发的用户自定义的错误。
- 断言错误是错误的一个特殊的类，每当 Node.js 检测到一个不应该发生的异常逻辑时会触发。 这类错误通常由 assert 模块触发。
+* 标准的 JavaScript 错误
+ 
+* 由底层操作系的触发的系统错误，例如试图打开一个不存在的文件、试图向一个已关闭的 socket 发送数据等。
+ 
+* 由应用程序代码触发的用户自定义的错误。
+ 
+* 断言错误是错误的一个特殊的类，每当 Node.js 检测到一个不应该发生的异常逻辑时会触发。 这类错误通常由 assert 模块触发。
 
 2.由于node使用的api大部分都是异步事件驱动，所以在回调函数中通常第一个参数是错误参数
 
@@ -262,10 +265,192 @@
 
 ```
 
+
+##file
+
+1.需要引入核心模块require('fs')
+
+2.除了创建文件流外，基本每一个api都有异步版本和同步版本
+
+3.同步版本是在异步api的名称后加上Sync后缀，而且同步api是没有回调函数的
+
+
+##process
+
+1.在全局变量中，无需引入
+
+2.包含系统信息、一些全局的处理事件（异常和promise失败）、使用i/o流、进程通讯等 
+
+```
+	// 环境信息等
+	console.dir(process.env)
+	console.dir(process.argv)
+	console.dir(process.cwd())
+
+	// 处理异常错误
+	process.on('uncaughtException', (err) => {
+	  fs.writeSync(1, `Caught exception: ${err}`);
+	});
+
+	// 处理Promise
+	const unhandledRejections = new Map();
+	process.on('unhandledRejection', (reason, p) => {
+		unhandledRejections.set(p, reason);
+	});
+	process.on('rejectionHandled', (p) => {
+		unhandledRejections.delete(p);
+	});
+
+	// 输入和输出
+	// process.stdin
+	// process.stdout
+	
+	// 延迟触发
+	process.nextTick(() => {
+		console.log('nextTick callback');
+	});
+
+```
+
+##os
+
+1.需要引入require('os')
+
+2.操作系统相关的api
+
+
+##url
+
+1.需要引入require('url')
+
+2.主要针对url地址进行转换
+
+```
+	const url = require('url')
+	const urlObject = url.parse('Https://hs:bs@www.LL.me:9394/bs?q=e2&d=dd#spa', true, true)
+	const urlString = url.format(urlObject)
+
+```
+
+##util
+
+1.需要引入require('util')
+
+2.util模块主要用于支持 Node.js 内部 API 的需求
+
+
+##assert
+
+1.需要引入require('assert')
+
+2.主要用于测试不变量
+
+
+##stream
+
+1.stream包含了writable、readable、Duplex和Transform，创建新stream时需要引入require('stream')
+
+2.可写流和可读流分别有自己的事件和各自的方法
+
+3.创建构造函数继承stream上writable、readable、Duplex和Transform四种类，来创建自定义流
+
+
+##readline
+
+1.需要引入require('readline')
+
+2.主要有interface类实现
+
+```
+	const readline = require('readline')
+
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+		prompt: '请输入> '
+	})
+
+	rl.prompt();
+
+	rl.on('line', (line) => {
+		switch(line.trim()) {
+			case 'hello':
+				console.log('world!');
+				break;
+			default:
+				console.log(`你输入的是：'${line.trim()}'`);
+				break;
+		}
+		rl.prompt();
+	}).on('close', () => {
+		console.log('再见!');
+		process.exit(0);
+	});
+
+```
+
+
+##repl
+
+1.需要引用require('repl')
+
+2.可以自定义终端的命令已经设计出对话
+
+```
+	
+	const repl = require('repl')
+
+	const r = repl.start('> ')
+	
+	initializeContext(r.context);
+	function initializeContext(context) {
+		context.m = 'test';
+	}
+
+	r.on('reset', initializeContext);
+
+	r.on('exit', () => {
+		console.log('从 REPL 接收到 "exit" 事件！');
+		process.exit();
+	})
+
+	r.defineCommand('sayhello', {
+		help: '打招呼',
+		action: function(name) {
+			this.lineParser.reset();
+			this.bufferedCommand = '';
+			console.log(`你好，${name}！`);
+			this.displayPrompt();
+		}
+	});
+	r.defineCommand('saybye', function() {
+		console.log('再见！');
+		this.close();
+	});
+
+```
+
 #TODO
 
-1. process
+1.child processes
 
-2.steam
+2.http(s)
 
-3.file
+
+#unfinished
+
+1.cluster
+
+2.crypto
+
+3.dns
+
+4.net
+
+5.TLS
+
+6.UDP
+
+7.VM
+
+8.ZLIB
